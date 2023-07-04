@@ -1,0 +1,11 @@
+#!/bin/sh -eux
+
+tag="${REGISTRY:-ghcr.io}/${GITHUB_REPOSITORY}"
+
+podman login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin << EOF
+${GITHUB_TOKEN}
+EOF
+
+podman build --tag="${tag}" .
+
+podman push "${tag}"
